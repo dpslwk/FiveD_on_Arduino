@@ -9,7 +9,6 @@
 #include	"timer.h"
 #include	"dda_queue.h"
 #include	"dda.h"
-#include	"clock.h"
 #include	"watchdog.h"
 #include	"debug.h"
 #include	"heater.h"
@@ -631,7 +630,7 @@ void process_gcode_command(GCODE_COMMAND *gcmd) {
 			#endif
 			// M112- immediate stop
 			case 112:
-				disableTimerInterrupt();
+				timer_stop();
 				power_off();
 				break;
 			// M113- extruder PWM
