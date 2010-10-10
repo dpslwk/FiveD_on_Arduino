@@ -17,6 +17,9 @@
 #include	"sersendf.h"
 #include	"heater.h"
 #include	"analog.h"
+#ifdef	GEN3
+	#include	"intercom.h"
+#endif
 
 void io_init(void) {
 	// disable modules we don't use
@@ -100,7 +103,12 @@ void init(void) {
 
 	// start up analog read interrupt loop, if anything uses analog as determined by ANALOG_MASK in your config.h
 	analog_init();
-	
+
+	#ifdef	GEN3
+		// initialise intercom to talk to extruder board
+		intercom_init();
+	#endif
+
 	// enable interrupts
 	sei();
 
@@ -116,6 +124,10 @@ void clock_250ms(void) {
 	// reset watchdog
 	wd_reset();
 
+	#ifdef	GEN3
+		start_send();
+	#endif
+	
 	temp_tick();
 
 	if (steptimeout > (30 * 4)) {
